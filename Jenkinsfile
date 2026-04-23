@@ -1,10 +1,6 @@
 pipeline {
     agent any
-
-    environment {
-        KUBECONFIG = "C:\\ProgramData\\Jenkins\\.kube\\config"
-    }
-
+	
     stages {
 
         stage('Clone') {
@@ -21,10 +17,9 @@ pipeline {
         }
 
         stage('Deploy Kubernetes') {
-            steps {
-                bat 'kubectl apply -f deployment.yaml --validate=false'
-				bat 'kubectl apply -f service.yaml --validate=false'	
-				bat 'kubectl rollout restart deployment webapp'
+            steps {		
+                bat 'kubectl apply -f deployment.yaml'
+				bat 'kubectl apply -f service.yaml'	
             }
         }
     }
