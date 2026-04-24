@@ -11,15 +11,15 @@ pipeline {
 
         stage('Build Docker') {
             steps {              
-				sh 'docker build -t tagarte/webapp:latest .'
+				bat 'docker build -t tagarte/webapp:latest .'
 
             }
         }
 
         stage('Deploy Kubernetes') {
             steps {		
-                sh 'kubectl apply -f deployment.yaml'
-				sh 'kubectl apply -f service.yaml'	
+                bat 'kubectl apply -f deployment.yaml'
+				bat 'kubectl apply -f service.yaml'	
             }
         }
     }
