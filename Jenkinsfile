@@ -16,7 +16,8 @@ pipeline {
 
         stage('Build Docker') {
             steps {              
-				bat 'docker build -t webapp:latest .'
+				bat "docker build -t webapp:${env.BUILD_NUMBER} ."
+
 
             }
         }
