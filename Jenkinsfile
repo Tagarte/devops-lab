@@ -1,13 +1,11 @@
 pipeline {
     agent any
-	
-	environment {
-    KUBECONFIG = 'C:\\ProgramData\\Jenkins\\.kube\\config'
-	}
 
-	
+    environment {
+        KUBECONFIG = 'C:\\ProgramData\\Jenkins\\.kube\\config'
+    }
+
     stages {
-
         stage('Clone') {
             steps {
                 git 'https://github.com/Tagarte/devops-lab.git'
@@ -15,18 +13,22 @@ pipeline {
         }
 
         stage('Build Docker') {
-            steps {              
-				bat "docker build -t webapp:${env.BUILD_NUMBER} ."
-
-
+            steps {
+                // On tag l'image avec le numéro du build Jenkins
+                bat "docker build -t webapp:${env.BUILD_NUMBER} ."
             }
         }
 
         stage('Deploy Kubernetes') {
-            steps {		
-                bat 'kubectl apply -f deployment.yaml'
-				bat 'kubectl apply -f service.yaml'
-				bat "kubectl rollout restart deployment webapp"
+            steps {
+                // On met à jour le fichier deployment.yaml avec le bon tag
+                bat "kubectl set image deployment/webapp webapp=webapp:${env.BUILD_NUMBER} --record"
+
+                // On force le redéploiement pour que les pods utilisent la nouvelle image
+                bat "kubectl rollout restart deployment webapp"
+
+                // Vérification du statut du déploiement
+                bat "kubectl rollout status deployment webapp"
             }
         }
     }
