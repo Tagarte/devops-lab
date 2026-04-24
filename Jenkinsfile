@@ -1,6 +1,11 @@
 pipeline {
     agent any
 	
+	environment {
+    KUBECONFIG = 'C:\\ProgramData\\Jenkins\\.kube\\config'
+	}
+
+	
     stages {
 
         stage('Clone') {
