@@ -24,7 +24,8 @@ pipeline {
         stage('Deploy Kubernetes') {
             steps {		
                 bat 'kubectl apply -f deployment.yaml'
-				bat 'kubectl apply -f service.yaml'	
+				bat 'kubectl apply -f service.yaml'
+				bat "kubectl rollout restart deployment webapp"
             }
         }
     }
