@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy Kubernetes') {
             steps {
                 // On met à jour le fichier deployment.yaml avec le bon tag
-                bat "kubectl set image deployment/webapp webapp=webapp:${env.BUILD_NUMBER} --record"
+                bat "kubectl set image webapp webapp=webapp:${env.BUILD_NUMBER} --record"
 
                 // On force le redéploiement pour que les pods utilisent la nouvelle image
                 bat "kubectl rollout restart deployment webapp"
